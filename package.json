@@ -1,0 +1,17 @@
+{
+  "name": "RequireNG",
+  "version": "0.0.0",
+  "description": "",
+  "main": "requireng.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^0.9.0",
+    "mkdirp": "^0.5.0",
+    "node-getopt": "^0.2.3",
+    "pluralize": "^1.1.2"
+  }
+}
