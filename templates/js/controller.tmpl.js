@@ -2,6 +2,7 @@
 "use strict";
 
 define([], function () {
+
 	var OBJECT_NAME = [
 		"$scope",
 		function OBJECT_NAME ($scope) {

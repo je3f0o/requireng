@@ -9,16 +9,16 @@ var fs     = require("fs"),
 	utils  = require("./utilities"),
 
 	opt    = require("node-getopt").create([
-		[ "c"    , "="       , "Controller"                  ] ,
-		[ "S"    , "="       , "Service"                     ] ,
-		[ "F"    , "="       , "Factory"                     ] ,
-		[ "d"    , "="       , "Directive"                   ] ,
-		[ "f"    , "="       , "Filter"                      ] ,
-		[ "s"    , "="       , "State"                       ] ,
-		[ "a"    , ""        , "Abstract / without template" ] ,
-		[ "u"    , ""        , "Uninstall module"            ] ,
-		[ "v"    , "version" , "show version"                ] ,
-		[ "h"    , "help"    , "display this help"           ]
+		[ "c" , "="       , "Controller"                  ] ,
+		[ "S" , "="       , "Service"                     ] ,
+		[ "F" , "="       , "Factory"                     ] ,
+		[ "d" , "="       , "Directive"                   ] ,
+		[ "f" , "="       , "Filter"                      ] ,
+		[ "s" , "="       , "State"                       ] ,
+		[ "a" , ""        , "Abstract / without template" ] ,
+		[ "u" , ""        , "Uninstall module"            ] ,
+		[ "v" , "version" , "show version"                ] ,
+		[ "h" , "help"    , "display this help"           ]
 	]).bindHelp().parseSystem(),
 
 	BASE_DIR = process.cwd(),
@@ -64,7 +64,6 @@ p.bootstrap = function (callback) {
 				cb(err);
 			}.bind(this),
 			function (cb) {
-				var public_dir = path.join(BASE_DIR, "public");
 
 				this.function_name             = this.module_name.capitalize();
 				this.function_name_with_suffix = this.function_name + "_" + this.module.suffix; 
@@ -75,12 +74,10 @@ p.bootstrap = function (callback) {
 				this.require_json_path = path.join(BASE_DIR, "requireng.json");
 				this.require_json      = require(this.require_json_path);
 
-				this.js_dir  = path.join(public_dir, "js");
-				this.js_path = path.join(this.js_dir, this.module.dir, this.filename_with_suffix + ".js");
+				this.js_path = path.join("src", this.module.dir, this.filename_with_suffix + ".js");
 				
 				if (this.module.has_template) {
-					this.html_dir  = path.join(public_dir, "templates")
-					this.html_path = path.join(this.html_dir, this.module.dir, this.filename_with_suffix + ".html");
+					this.html_path = path.join("templates", this.module.dir, this.filename_with_suffix + ".html");
 				}
 
 				cb()
@@ -110,18 +107,18 @@ p.init = function (callback) {
 
 				if (! fs.existsSync(require_ng_path)) {
 					require_ng_json = {
-						appication_name : application_name,
-						base_dir        : "public/js",
-						output_path     : "public/js/app",
-						router_manager  : "modules/main_module",
-						libs            : [],
-						states          : [],
-						filters         : {},
-						services        : {},
-						factories       : {},
-						directives      : {},
-						controllers     : {},
-						dependencies    : []
+						application_name : application_name,
+						src_dir        : "src",
+						dest_dir       : "dest",
+						router_manager : "modules/main_module",
+						libs           : [],
+						states         : [],
+						filters        : {},
+						services       : {},
+						factories      : {},
+						directives     : {},
+						controllers    : {},
+						dependencies   : []
 					};
 					fs.writeFileSync(require_ng_path, JSON.stringify(require_ng_json, null, 4));
 					utils.done();
@@ -296,7 +293,7 @@ p.update_dependencies = function (callback) {
 		is_state        = module_type === "state",
 		indent_space    = is_state ? "\t\t\t\t" : "\t\t",
 		module_filename = is_state ? "main_module.js" : dir + "_module.js",
-		module_file_dir = path.join(this.js_dir, "modules"),
+		module_file_dir = path.join("src", "modules"),
 		module_filepath = path.join(module_file_dir, module_filename),
 		module_template;
 
@@ -361,7 +358,6 @@ p.update_dependencies = function (callback) {
 					utils.done();
 				}
 
-				fs.writeFileSync("this.json", JSON.stringify(this, null, 4));
 				cb(null, this.js_path);
 			}.bind(this)
 		],

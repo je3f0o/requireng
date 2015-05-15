@@ -2,6 +2,7 @@
 "use strict";
 
 define([], function () {
+
 	var OBJECT_NAME = [
 		function OBJECT_NAME () {
 
